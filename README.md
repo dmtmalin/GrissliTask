@@ -1,6 +1,7 @@
 ###### Dev установка
 Установка Redis
-'sudo apt-get install redis-server'
+
+`sudo apt-get install redis-server`
 
 Установка пакетного менеджера:
 
