@@ -1,21 +1,20 @@
 {% for task_info in list_task_info %}
   <div class="well" id="{{ task_info.task_id }}">
     <p>Номер задачи: {{ task_info.task_id }}</p>
-    {% if task_info.status in ('PENDING', 'PROGRESS') %}
-      <a href="/task/cancel/{{ task_info.task_id }}">Отменить</a>
-    {% endif %}
     <p>Статус: {{ task_info.status }}{% if task_info.message %}, {{ task_info.message }}...{% endif %}</p>
-    {% if task_info.result %}
+    {% if task_info.result.url %}
       <p>url: <a href="{{ task_info.result.url }}">{{ task_info.result.url }}</a></p>
+    {% endif %}
+    {% if task_info.result.title %}
       <p>title: {{ task_info.result.title }}</p>
-      {% if task_info.result.h1 %}
-        <p>h1: {{ task_info.result.h1 }}</p>
-      {% endif %}
-      {% if task_info.result.img %}
-        <a href="/uploads/{{ task_info.result.img }}">Изображение</a>
-      {% elif task_info.result.img_error %}
-        <p>Ошибка при загрузке изображения: {{ task_info.result.img_error }}</p>
-      {% endif %}
+    {% endif %}
+    {% if task_info.result.h1 %}
+      <p>h1: {{ task_info.result.h1 }}</p>
+    {% endif %}
+    {% if task_info.result.img %}
+      <a href="/uploads/{{ task_info.result.img }}">Изображение</a>
+    {% elif task_info.result.img_error %}
+      <p>Ошибка при загрузке изображения: {{ task_info.result.img_error }}</p>
     {% endif %}
   </div>
 {% endfor %}

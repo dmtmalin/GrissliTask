@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
 from decorators import check_is_busy
-from page_parse.app import app, redis, celery
-from flask import render_template, request
+from page_parse.app import app, redis
+from flask import render_template, request, jsonify
 from flask.helpers import make_response, send_file
-from page_parse.helpers.util import datetime_parse, score,\
+from page_parse.helpers.utils import datetime_parse, score,\
     get_task_info, random_hash
+from page_parse.helpers.pagination import Pagination
 from page_parse.tasks import page_parse
 
 
@@ -36,9 +37,20 @@ def new_task():
     return render_template('task_block.html', list_task_info=list_task_info)
 
 
-@app.route('/task/cancel/<task_id>')
-def cancel_task(task_id):
-    celery.control.revoke(task_id, terminate=True, signal='SIGKILL')
+@app.route('/task/page', defaults={'page': 0})
+@app.route('/task/page/<int:page>', methods=['POST'])
+def page_task(page):
+    session_key = request.cookies['session_key']
+    count = redis.zcard(session_key)
+    pagination = Pagination(page, app.config['PER_PAGE'], count)
+    start, stop = pagination.range
+    list_task_id = redis.zrevrange(session_key, start, stop)
+    list_task_info = []
+    for task_id in list_task_id:
+        task_info = get_task_info(page_parse, task_id)
+        list_task_info.append(task_info)
+    html = render_template('task_block.html', list_task_info=list_task_info)
+    return jsonify({'html': html, 'has_next': pagination.has_next})
 
 
 @app.route("/uploads/<filename>")

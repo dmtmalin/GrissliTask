@@ -23,7 +23,7 @@ def get_task_info(task_cls, task_id):
     if task.state == 'PENDING':
         response = TaskInfo(task_id, task.state)
     elif task.state != 'FAILURE':
-        response = TaskInfo(task_id, task.state, task.info.get('message'), task.info.get('result'))
+        response = TaskInfo(task_id, task.state, task.info.get('message'), result=task.info)
     else:
         # something wrong, exception raised in task.info
         response = TaskInfo(task_id, task.state, message=str(task.info))

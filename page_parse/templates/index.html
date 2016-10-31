@@ -3,4 +3,32 @@
 {% block title %}Index page{% endblock %}
 
 {% block content %}
+  <div class="container">
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="well">
+      <form class="JS-form">
+        <label for="urls">URLs</label>
+        {% for foo in range(5) %}
+          <div class="form-group">
+            <input name="url[]" type="url" class="form-control" id="urls">
+          </div>
+        {% endfor %}
+
+        <div class="form-group">
+          <label for="estimated_time">Время отложенного запуска</label>
+          <div class="input-group date JS-datetime">
+            <input id="estimated_time" name="estimated_time" class="form-control" type="text" />
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-time"></span>
+            </span>
+          </div>
+        </div>
+      </form>
+      <button class="btn btn-primary JS-new-task" data-action="{{ url_for('new_task') }}">OK</button>
+    </div>
+  </div> <!-- /container -->
+
+  <div class="container JS-tasks">
+    <button class="btn btn-primary JS-page-task" data-action="{{ url_for('page_task') }}">NEXT</button>
+  </div> <!-- /container -->
 {% endblock %}

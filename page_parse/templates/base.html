@@ -7,40 +7,15 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>{{ title }}</title>
+    <title>{% block title %}{% endblock title %}</title>
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" />
   </head>
 
   <body>
-    <div class="container">
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="well">
-        <form class="JS-form">
-          <label for="urls">URLs</label>
-          {% for foo in range(5) %}
-            <div class="form-group">
-              <input name="url[]" type="url" class="form-control" id="urls">
-            </div>
-          {% endfor %}
 
-          <div class="form-group">
-            <label for="estimated_time">Время отложенного запуска</label>
-            <div class="input-group date JS-datetime">
-              <input id="estimated_time" name="estimated_time" class="form-control" type="text" />
-              <span class="input-group-addon">
-                <span class="glyphicon glyphicon-time"></span>
-              </span>
-            </div>
-          </div>
-        </form>
-        <button class="btn btn-primary JS-new-tasks" data-action="{{ url_for('new_task') }}">OK</button>
-      </div>
-
-    </div> <!-- /container -->
-
-    <div class="container JS-tasks"></div> <!-- /container -->
+    {% block content %}{% endblock %}
 
     <script src="{{ url_for('static', filename='components/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='components/bootstrap/dist/js/bootstrap.min.js') }}"></script>

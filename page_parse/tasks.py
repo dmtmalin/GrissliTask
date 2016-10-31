@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 import urlparse
-import time
-from helpers.html_parser import SimpleParser
+from helpers.html_parser import HTMLParser
 from page_parse.models import TaskInfo
 from page_parse.app import celery, messages, app
-from page_parse.helpers.util import html_response, save_image
+from page_parse.helpers.utils import html_response, save_image
 from flask_socketio import SocketIO
 
 
@@ -16,9 +15,7 @@ def page_parse(self, url):
     def update_state():
         self.update_state(state=task_info.status, meta=task_info.get_message())
         socket.emit('update_state', {'task_id': self.request.id, 'html': task_info.get_html()}, namespace='/parse')
-
     update_state()
-    time.sleep(10)
     html, error = html_response(url)
     if error:
         task_info.status = 'FAILURE'
@@ -27,7 +24,7 @@ def page_parse(self, url):
 
     task_info.message = messages['PARSE_PAGE']
     update_state()
-    parser = SimpleParser()
+    parser = HTMLParser()
     parser.feed(html)
 
     result = {

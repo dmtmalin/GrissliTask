@@ -1,6 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
-page_parse/uploads
+page_parse/uploads/*
 page_parse/static/components
 
 ### Python template

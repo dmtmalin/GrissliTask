@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from HTMLParser import HTMLParser
+from HTMLParser import HTMLParser as BaseHTMLParser
 
 
-class SimpleParser(HTMLParser):
+class HTMLParser(BaseHTMLParser):
     def __init__(self):
-        HTMLParser.__init__(self)
+        BaseHTMLParser.__init__(self)
         self.title = None
         self.h1 = None
         self.img = None

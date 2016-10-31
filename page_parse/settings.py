@@ -3,6 +3,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+# task pagination
+PER_PAGE = 3
 # secret key for app
 SECRET_KEY = '!secret'
 CSRF_ENABLED = True
