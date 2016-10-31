@@ -1,4 +1,7 @@
 ###### Dev установка
+Установка Redis
+'sudo apt-get install redis-server'
+
 Установка пакетного менеджера:
 
 (установка nodejs: `sudo apt-get install nodejs`)
