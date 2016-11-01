@@ -28,7 +28,7 @@ def new_task():
     list_task_info = []
     for url in urls:
         # run page_parse task for each url
-        task = page_parse.apply_async((url, ), eta=estimated_time)
+        task = page_parse.apply_async((url, session_key), eta=estimated_time)
         # get task info for response
         task_info = get_task_info(page_parse, task.id)
         list_task_info.append(task_info)
@@ -37,12 +37,11 @@ def new_task():
     return render_template('task_block.html', list_task_info=list_task_info)
 
 
-@app.route('/task/page', defaults={'page': 0})
-@app.route('/task/page/<int:page>', methods=['POST'])
-def page_task(page):
+@app.route('/task/page', methods=['POST'])
+def page_task():
     session_key = request.cookies['session_key']
     count = redis.zcard(session_key)
-    pagination = Pagination(page, app.config['PER_PAGE'], count)
+    pagination = Pagination(int(request.form['page']), app.config['PER_PAGE'], count)
     start, stop = pagination.range
     list_task_id = redis.zrevrange(session_key, start, stop)
     list_task_info = []

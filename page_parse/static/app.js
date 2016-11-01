@@ -1,7 +1,7 @@
 var current_page = 0;
 
 $(document).ready(function(){
-    var namespace = '/parse';
+    var namespace = '/' + $.cookie("session_key");
     var socket = io('http://' + document.domain + ':' + location.port + namespace);
     InitButtonPageTask();
     InitDatetimePicker();
@@ -54,7 +54,10 @@ function GetPageNext() {
     var button = $('.JS-page-task');
     var url = button.attr('data-action');
     $.ajax({
-        url: url + '/' + current_page,
+        url: url,
+        data: {
+            'page':current_page
+        },
         type: 'post',
         success: function (json) {
             $('.JS-tasks').prepend(json['html']);

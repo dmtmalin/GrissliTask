@@ -8,13 +8,14 @@ from flask_socketio import SocketIO
 
 
 @celery.task(bind=True)
-def page_parse(self, url):
+def page_parse(self, url, session_key):
+    namespace = '/%s' % (session_key, )
     socket = SocketIO(message_queue=app.config['SOCKET_QUEUE_URL'])
     task_info = TaskInfo(self.request.id, 'PROGRESS', messages['OBTAINING_PAGE'])
 
     def update_state():
         self.update_state(state=task_info.status, meta=task_info.get_message())
-        socket.emit('update_state', {'task_id': self.request.id, 'html': task_info.get_html()}, namespace='/parse')
+        socket.emit('update_state', {'task_id': self.request.id, 'html': task_info.get_html()}, namespace=namespace)
     update_state()
     html, error = html_response(url)
     if error:
